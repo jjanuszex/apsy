@@ -1,0 +1,36 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: goldpinger
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://okgolove.github.io/helm-charts/
+    targetRevision: 6.2.0
+    chart: goldpinger
+    helm:
+      version: v3
+      releaseName: goldpinger
+      passCredentials: false
+      values: |-
+        prometheus-node-exporter:
+          hostRootFsMount:
+            enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: goldpinger
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+      - Validate=true
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
+      - ServerSideApply=true
