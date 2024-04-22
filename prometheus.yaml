@@ -7,7 +7,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: apps-project
   source:
     repoURL: https://okgolove.github.io/helm-charts/
     targetRevision: 6.2.0
